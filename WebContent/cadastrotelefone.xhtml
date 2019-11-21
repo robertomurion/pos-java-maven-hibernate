@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Cadastro Telefone</title>
+</h:head>
+<h:body>
+
+	<h:form>
+		<p:breadCrumb>
+			<p:menuitem />
+			<p:menuitem value="pagina JSF" action="index.jsf" />
+		</p:breadCrumb>
+	</h:form>
+
+	<h:form id="formTelefone">
+		<p:growl autoUpdate="true" />
+
+		<h:panelGrid columns="2">
+			<f:facet name="header">
+				<h:outputText value="Cadastro Telefone" />
+			</f:facet>
+			<p:outputLabel value="Nome: " />
+			<p:outputLabel value="#{telefoneManagedBean.usuarioPessoa.nome}"
+				readonly="true" />
+
+			<p:outputLabel value="Numero:" />
+			<p:inputText value="#{telefoneManagedBean.telefoneUser.numero}"
+			 required="true" requiredMessage="Campo obrigatório"/>
+
+			<p:outputLabel value="Tipo:" />
+			<p:selectOneMenu id="campoTipo"
+				value="#{telefoneManagedBean.telefoneUser.tipo}" required="true"
+				requiredMessage="Campo tipo obrigatório">
+				<f:selectItem itemLabel="[-Selecione-]" noSelectionOption="true" />
+				<f:selectItem itemValue="celular" itemLabel="Celular" />
+				<f:selectItem itemValue="residencial" itemLabel="Residencial" />
+				<f:selectItem itemValue="comercial" itemLabel="Comercial" />
+			</p:selectOneMenu>
+
+			<p:outputLabel />
+			<h:panelGroup>
+				<p:commandButton value="Salvar"
+					action="#{telefoneManagedBean.salvar}" title="Salvar"  update="@form formTable"/>
+
+				<p:commandButton style="margin-left:1cm;" value="Limpar"
+					id="botaoLimpar" action="#{telefoneManagedBean.novo}"
+					title="Limpar" immediate="true">
+					<f:ajax execute="botaoLimpar" render="@form" />
+				</p:commandButton>
+			</h:panelGroup>
+		</h:panelGrid>
+	</h:form>
+	<br />
+	<br />
+	<h:form id="formTable">
+		<p:dataTable value="#{telefoneManagedBean.telefones}" var="telefone"
+			border="1" cellpadding="6">
+			<f:facet name="header">
+			Lista de Telefones Cadastrados 
+		</f:facet>
+			<p:column headerText="ID" style="width:20px">
+				<h:outputText value="#{telefone.id}" />
+			</p:column>
+
+			<p:column headerText="Numero" style="width:200px">
+				<h:outputText value="#{telefone.numero}" />
+			</p:column>
+
+			<p:column headerText="Tipo" style="width:150px">
+				<h:outputText value="#{telefone.tipo}" />
+			</p:column>
+
+			<p:column headerText="Editar" style="width:150px">
+				<center>
+					<p:commandLink title="Editar"  immediate="true" update="formTelefone">
+						<f:setPropertyActionListener
+							target="#{telefoneManagedBean.telefoneUser}" value="#{telefone}" />
+							<h:graphicImage url="resources/img/editar.png" width="25"
+							height="25" />
+					</p:commandLink>
+				</center>
+			</p:column>
+
+			<p:column headerText="Excluir" style="width:150px">
+				<center>
+					<p:commandLink action="#{telefoneManagedBean.apagar}"
+						title="Excluir"  update="formTelefone formTable">
+						<f:setPropertyActionListener
+							target="#{telefoneManagedBean.telefoneUser}" value="#{telefone}" />
+							<h:graphicImage url="resources/img/delete.png" width="25"
+							height="25" />
+					</p:commandLink>
+				</center>
+			</p:column>
+
+		</p:dataTable>
+	</h:form>
+</h:body>
+</html>
